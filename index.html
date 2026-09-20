@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexCampus | Your Campus, Made Simple</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Typography plugin -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['DM Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['Manrope', 'DM Sans', 'ui-sans-serif', 'system-ui', 'sans-serif']
+          },
+          animation: {
+            float: 'float 6s ease-in-out infinite',
+            pulseGlow: 'pulseGlow 4s ease-in-out infinite',
+            shimmer: 'shimmer 5s linear infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-12px)' }
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.35', transform: 'scale(1)' },
+              '50%': { opacity: '0.65', transform: 'scale(1.08)' }
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '0% 50%' },
+              '100%': { backgroundPosition: '200% 50%' }
+            }
+          }
+        }
+      },
+      plugins: [
+        tailwindcssTypography
+      ]
+    }
+  </script>
+
+  <!-- Typography plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.16/src/index.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: #07090f;
+      color: #eef1f8;
+      font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Manrope', 'DM Sans', sans-serif;
+    }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .text-gradient {
+      background: linear-gradient(
+        100deg,
+        #ff7a45,
+        #ffb627,
+        #ff5436,
+        #ff8a3d
+      );
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 5s linear infinite;
+    }
+
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-glow::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        transparent 30%,
+        rgba(255,255,255,.3) 50%,
+        transparent 70%
+      );
+      transform: translateX(-100%);
+      transition: transform .6s ease;
+    }
+
+    .btn-glow:hover::after {
+      transform: translateX(100%);
+    }
+
+    .glass {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(12px);
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      100% {
+        background-position: 200% 50%;
+      }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: .65;
+      }
+
+      85% {
+        opacity: .65;
+      }
+
+      100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+
+    .particle {
+      position: absolute;
+      bottom: -20px;
+      border-radius: 999px;
+      animation: floatUp linear infinite;
+    }
+
+    .bubble {
+      animation: bubbleFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes bubbleFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @media (max-width: 1023px) {
+      .floating-conversations {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Decorative background -->
+  <div
+    class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+    aria-hidden="true"
+  >
+    <div class="grid-bg absolute inset-0"></div>
+
+    <div
+      class="absolute -left-40 -top-32 h-[520px] w-[520px] rounded-full bg-orange-500/20 blur-[120px] animate-pulseGlow">
+    </div>
+
+    <div
+      class="absolute -right-40 top-1/3 h-[600px] w-[600px] rounded-full bg-red-500/15 blur-[130px] animate-pulseGlow">
+    </div>
+
+    <div
+      class="absolute bottom-[-220px] left-1/3 h-[480px] w-[480px] rounded-full bg-amber-400/10 blur-[110px] animate-pulseGlow">
+    </div>
+  </div>
+
+
+  <!-- HEADER -->
+  <header class="relative z-30 border-b border-white/10 bg-[#07090f]/85 backdrop-blur-xl">
+
+    <nav
+      class="mx-auto flex min-h-[76px] max-w-6xl items-center justify-between px-5 sm:px-8"
+      aria-label="Main navigation"
+    >
+
+      <a
+        href="#top"
+        class="flex items-center gap-3"
+        aria-label="NexCampus home"
+      >
+
+        <span
+          class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-400 to-red-500 text-white shadow-lg shadow-orange-500/30"
+        >
+          🧭
+        </span>
+
+        <span class="text-[17px] font-bold tracking-tight text-white">
+          NexCampus
+        </span>
+
+      </a>
+
+
+      <!-- Desktop navigation -->
+      <div class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+
+        <a
+          href="#how-it-works"
+          class="transition hover:text-amber-400"
+        >
+          How it works
+        </a>
+
+        <a
+          href="#topics"
+          class="transition hover:text-amber-400"
+        >
+          Explore topics
+        </a>
+
+        <a
+          href="#about"
+          class="transition hover:text-amber-400"
+        >
+          About us
+        </a>
+
+      </div>
+
+
+      <a
+        href="#get-started"
+        class="btn-glow hidden rounded-lg bg-gradient-to-r from-orange-400 to-red-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 md:block"
+      >
+        Get started
+      </a>
+
+
+      <!-- Mobile menu button -->
+      <button
+        id="menuButton"
+        class="rounded-lg p-2 text-slate-200 md:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+    </nav>
+
+
+    <!-- Mobile menu -->
+    <div
+      id="mobileMenu"
+      class="hidden border-t border-white/10 bg-[#0c0f17] px-5 py-5 md:hidden"
+    >
+
+      <div class="flex flex-col gap-4 text-sm font-semibold text-slate-200">
+
+        <a href="#how-it-works">
+          How it works
+        </a>
+
+        <a href="#topics">
+          Explore topics
+        </a>
+
+        <a href="#about">
+          About us
+        </a>
+
+        <a
+          href="#get-started"
+          class="rounded-lg bg-gradient-to-r from-orange-400 to-red-500 px-4 py-3 text-white"
+        >
+          Get started
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- MAIN -->
+  <main id="top" class="relative z-10">
+
+
+    <!-- HERO SECTION -->
+    <section
+      class="relative overflow-hidden"
+      aria-labelledby="hero-title"
+    >
+
+
+      <!-- Floating student conversations -->
+      <div
+        class="floating-conversations pointer-events-none absolute inset-0 z-20"
+        aria-hidden="true"
+      >
+
+
+        <!-- LEFT TOP -->
+        <div
+          class="bubble absolute left-[3%] top-[12%] z-30 w-56 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs text-slate-300 backdrop-blur-md"
+        >
+
+          <strong class="text-orange-300">
+            Student:
+          </strong>
+
+          What is the attendance rule?
+
+          <div
+            class="mt-2 rounded-xl border border-orange-400/20 bg-orange-400/10 p-2 text-orange-100"
+          >
+            NexCampus: You need 75% to write exams.
+          </div>
+
+        </div>
+
+
+        <!-- RIGHT TOP -->
+        <div
+          class="bubble absolute right-[1%] top-[18%] w-56 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs text-slate-300 backdrop-blur-md"
+          style="animation-delay:1s"
+        >
+
+          <strong class="text-orange-300">
+            Student:
+          </strong>
+
+          When is the hostel curfew?
+
+          <div
+            class="mt-2 rounded-xl border border-orange-400/20 bg-orange-400/10 p-2 text-orange-100"
+          >
+            NexCampus: Gates close at 10:30pm.
+          </div>
+
+        </div>
+
+
+        <!-- LEFT BOTTOM -->
+        <div
+          class="bubble absolute bottom-[18%] left-[6%] z-30 w-56 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs text-slate-300 backdrop-blur-md"
+          style="animation-delay:2s"
+        >
+
+          <strong class="text-orange-300">
+            Student:
+          </strong>
+
+          How do I get a library card?
+
+          <div
+            class="mt-2 rounded-xl border border-orange-400/20 bg-orange-400/10 p-2 text-orange-100"
+          >
+            NexCampus: Apply at the library desk.
+          </div>
+
+        </div>
+
+
+        <!-- RIGHT BOTTOM -->
+        <div
+          class="bubble absolute bottom-[15%] right-[6%] w-56 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs text-slate-300 backdrop-blur-md"
+          style="animation-delay:3s"
+        >
+
+          <strong class="text-orange-300">
+            Student:
+          </strong>
+
+          Is there a dress code?
+
+          <div
+            class="mt-2 rounded-xl border border-orange-400/20 bg-orange-400/10 p-2 text-orange-100"
+          >
+            NexCampus: Formal attire is required.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Hero grid -->
+      <div
+        class="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-20 pt-16 sm:px-8 md:grid-cols-[1.03fr_.97fr] md:pb-24 md:pt-24"
+      >
+
+
+        <!-- LEFT HERO CONTENT -->
+        <div class="relative z-10 max-w-xl">
+
+          <div
+            class="mb-6 inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-3.5 py-2 text-[11px] font-bold uppercase tracking-[.12em] text-amber-300"
+          >
+            ✨ Your campus, made simple
+          </div>
+
+
+          <h1
+            id="hero-title"
+            class="max-w-2xl text-5xl font-extrabold leading-tight tracking-[-.055em] text-white sm:text-6xl"
+          >
+            The smarter way to understand
+            <span class="text-gradient">
+              your campus.
+            </span>
+          </h1>
+
+
+          <p
+            class="mt-6 max-w-lg text-lg leading-8 text-slate-300"
+          >
+            NexCampus helps students and campus visitors find clear,
+            reliable information about rules, resources, and everything
+            in between.
+          </p>
+
+
+          <!-- Search -->
+          <form
+            id="searchForm"
+            class="mt-8 flex max-w-xl flex-col gap-3 sm:flex-row"
+          >
+
+            <label
+              class="sr-only"
+              for="searchInput"
+            >
+              Search campus information
+            </label>
+
+            <div
+              class="flex min-h-[52px] flex-1 items-center gap-3 rounded-xl border border-white/15 bg-white/5 px-4 backdrop-blur-sm focus-within:border-orange-400/60"
+            >
+
+              <span class="text-lg text-amber-300">
+                ⌕
+              </span>
+
+              <input
+                id="searchInput"
+                class="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-400"
+                placeholder="What do you want to know?"
+              >
+
+            </div>
+
+
+            <button
+              class="btn-glow min-h-[52px] rounded-xl bg-gradient-to-r from-orange-400 to-red-500 px-7 text-sm font-bold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5"
+              type="submit"
+            >
+              Search
+            </button>
+
+          </form>
+
+
+          <p
+            id="searchMessage"
+            class="mt-3 hidden text-sm font-medium text-amber-300"
+            aria-live="polite"
+          ></p>
+
+
+          <!-- Popular topics -->
+          <p
+            class="mt-5 flex flex-wrap items-center gap-2 text-xs text-slate-400"
+          >
+
+            <span class="font-semibold text-slate-300">
+              Popular:
+            </span>
+
+            <button
+              class="topic-link underline decoration-slate-600 underline-offset-4 hover:text-amber-300"
+            >
+              Attendance rules
+            </button>
+
+            <button
+              class="topic-link underline decoration-slate-600 underline-offset-4 hover:text-amber-300"
+            >
+              Hostel guidelines
+            </button>
+
+            <button
+              class="topic-link underline decoration-slate-600 underline-offset-4 hover:text-amber-300"
+            >
+              Exam policies
+            </button>
+
+          </p>
+
+        </div>
+
+
+        <!-- CAMPUS GUIDE -->
+        <div
+          class="relative z-10 mx-auto w-full max-w-md md:justify-self-end"
+        >
+
+          <div
+            class="absolute -right-4 -top-6 hidden h-24 w-24 rounded-2xl border border-orange-400/30 sm:block"
+          ></div>
+
+          <div
+            class="absolute -bottom-5 -left-5 h-24 w-24 rounded-full border border-amber-400/30"
+          ></div>
+
+
+          <article
+            class="relative rounded-[28px] border border-white/10 bg-gradient-to-br from-[#161b27] to-[#0c0f17] p-5 shadow-2xl shadow-orange-500/10 sm:p-7"
+          >
+
+            <div
+              class="rounded-2xl border border-white/10 bg-[#0c0f17] p-5 sm:p-6"
+            >
+
+              <div
+                class="flex items-center justify-between border-b border-white/10 pb-5"
+              >
+
+                <div class="flex items-center gap-2.5">
+
+                  <span
+                    class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-400/15 text-amber-300"
+                  >
+                    📖
+                  </span>
+
+                  <span class="text-sm font-bold text-white">
+                    Campus guide
+                  </span>
+
+                </div>
+
+                <span
+                  class="rounded-full bg-amber-400/15 px-2.5 py-1 text-[10px] font-bold text-amber-300"
+                >
+                  Verified
+                </span>
+
+              </div>
+
+
+              <p
+                class="mt-6 text-xs font-semibold uppercase tracking-[.12em] text-orange-400"
+              >
+                Student essentials
+              </p>
+
+
+              <h2
+                class="mt-2 text-2xl font-bold leading-tight tracking-tight text-white"
+              >
+                Know the rules.<br>
+                Feel confident.
+              </h2>
+
+
+              <div class="mt-6 space-y-3">
+
+                <div
+                  class="flex items-center justify-between rounded-xl bg-white/5 px-3.5 py-3"
+                >
+                  <span class="text-xs font-semibold text-slate-300">
+                    ✓ Attendance & academics
+                  </span>
+
+                  <span class="text-slate-500">
+                    →
+                  </span>
+                </div>
+
+
+                <div
+                  class="flex items-center justify-between rounded-xl bg-white/5 px-3.5 py-3"
+                >
+                  <span class="text-xs font-semibold text-slate-300">
+                    ✓ Campus facilities
+                  </span>
+
+                  <span class="text-slate-500">
+                    →
+                  </span>
+                </div>
+
+
+                <div
+                  class="flex items-center justify-between rounded-xl bg-white/5 px-3.5 py-3"
+                >
+                  <span class="text-xs font-semibold text-slate-300">
+                    ✓ Safety & support
+                  </span>
+
+                  <span class="text-slate-500">
+                    →
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div
+                class="mt-6 flex items-center gap-3 rounded-xl border border-orange-400/20 bg-gradient-to-r from-orange-400/15 to-red-500/15 px-4 py-3.5"
+              >
+
+                <span class="text-lg text-amber-300">
+                  ✓
+                </span>
+
+                <div>
+
+                  <p class="text-xs font-bold text-white">
+                    Trusted information
+                  </p>
+
+                  <p class="mt-0.5 text-[10px] text-slate-400">
+                    Built for your campus community
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section
+      id="how-it-works"
+      class="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-24"
+      aria-labelledby="how-title"
+    >
+
+      <div class="mx-auto max-w-xl text-center">
+
+        <p
+          class="text-xs font-bold uppercase tracking-[.15em] text-orange-400"
+        >
+          A better campus experience
+        </p>
+
+        <h2
+          id="how-title"
+          class="mt-3 text-4xl font-bold tracking-tight text-white"
+        >
+          Less confusion.
+          More
+          <span class="text-gradient">
+            confidence.
+          </span>
+        </h2>
+
+        <p
+          class="mt-4 text-base leading-7 text-slate-400"
+        >
+          Starting somewhere new can feel overwhelming.
+          We make it easier to understand how things work.
+        </p>
+
+      </div>
+
+
+      <div class="mt-12 grid gap-5 md:grid-cols-3">
+
+        <article
+          class="glass rounded-2xl p-7 transition hover:-translate-y-1 hover:border-orange-400/40"
+        >
+
+          <span
+            class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-400/15 text-xl text-amber-300"
+          >
+            ⌕
+          </span>
+
+          <h3 class="mt-5 text-lg font-bold text-white">
+            Find what you need
+          </h3>
+
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            Search campus rules, policies, and essential information in seconds.
+          </p>
+
+        </article>
+
+
+        <article
+          class="glass rounded-2xl p-7 transition hover:-translate-y-1 hover:border-orange-400/40"
+        >
+
+          <span
+            class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-400/15 text-xl text-orange-300"
+          >
+            ▤
+          </span>
+
+          <h3 class="mt-5 text-lg font-bold text-white">
+            Clear & simple answers
+          </h3>
+
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            No more confusing documents.
+            Get information explained simply.
+          </p>
+
+        </article>
+
+
+        <article
+          class="glass rounded-2xl p-7 transition hover:-translate-y-1 hover:border-orange-400/40"
+        >
+
+          <span
+            class="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/15 text-xl text-red-300"
+          >
+            ?
+          </span>
+
+          <h3 class="mt-5 text-lg font-bold text-white">
+            Get help when stuck
+          </h3>
+
+          <p class="mt-2 text-sm leading-6 text-slate-400">
+            Ask questions and get guidance whenever you need it.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOPICS -->
+    <section
+      id="topics"
+      class="border-y border-white/10 bg-white/[.03]"
+      aria-labelledby="topics-title"
+    >
+
+      <div
+        class="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-8 md:grid-cols-[.9fr_1.1fr] md:items-center md:py-20"
+      >
+
+        <div>
+
+          <p
+            class="text-xs font-bold uppercase tracking-[.15em] text-orange-400"
+          >
+            Start exploring
+          </p>
+
+          <h2
+            id="topics-title"
+            class="mt-3 max-w-md text-4xl font-bold leading-tight tracking-tight text-white"
+          >
+            Your questions deserve
+            <span class="text-gradient">
+              clear answers.
+            </span>
+          </h2>
+
+          <p
+            class="mt-4 max-w-md text-base leading-7 text-slate-300"
+          >
+            From your first day to your final semester,
+            find the guidance you need to move through campus with confidence.
+          </p>
+
+          <a
+            href="#get-started"
+            class="mt-7 inline-flex items-center gap-2 text-sm font-bold text-amber-300 hover:gap-3"
+          >
+            Browse all topics →
+          </a>
+
+        </div>
+
+
+        <div class="grid gap-3 sm:grid-cols-2">
+
+          <button
+            class="topic-card glass flex items-center justify-between rounded-xl px-5 py-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40"
+          >
+            <span class="text-sm font-bold text-white">
+              <span class="mr-3 text-orange-400">
+                01
+              </span>
+              Attendance rules
+            </span>
+
+            <span class="text-slate-500">
+              →
+            </span>
+          </button>
+
+
+          <button
+            class="topic-card glass flex items-center justify-between rounded-xl px-5 py-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40"
+          >
+            <span class="text-sm font-bold text-white">
+              <span class="mr-3 text-orange-400">
+                02
+              </span>
+              Hostel guidelines
+            </span>
+
+            <span class="text-slate-500">
+              →
+            </span>
+          </button>
+
+
+          <button
+            class="topic-card glass flex items-center justify-between rounded-xl px-5 py-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40"
+          >
+            <span class="text-sm font-bold text-white">
+              <span class="mr-3 text-orange-400">
+                03
+              </span>
+              Exam policies
+            </span>
+
+            <span class="text-slate-500">
+              →
+            </span>
+          </button>
+
+
+          <button
+            class="topic-card glass flex items-center justify-between rounded-xl px-5 py-5 text-left transition hover:-translate-y-0.5 hover:border-orange-400/40"
+          >
+            <span class="text-sm font-bold text-white">
+              <span class="mr-3 text-orange-400">
+                04
+              </span>
+              Code of conduct
+            </span>
+
+            <span class="text-slate-500">
+              →
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section
+      id="about"
+      class="mx-auto max-w-6xl px-5 py-20 text-center sm:px-8 md:py-24"
+      aria-labelledby="about-title"
+    >
+
+      <div
+        class="mx-auto flex max-w-3xl flex-col items-center"
+      >
+
+        <span
+          class="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-400/15 text-xl text-amber-300"
+        >
+          🎓
+        </span>
+
+        <h2
+          id="about-title"
+          class="mt-5 text-4xl font-bold tracking-tight text-white"
+        >
+          Built for every member of
+          <span class="text-gradient">
+            campus.
+          </span>
+        </h2>
+
+        <p
+          class="mt-4 text-base leading-7 text-slate-400"
+        >
+          Whether you're a fresher finding your way,
+          a postgraduate navigating a new department,
+          or a visitor looking for direction —
+          NexCampus is here to help.
+        </p>
+
+
+        <div
+          class="mt-8 flex flex-wrap justify-center gap-3 text-xs font-semibold text-slate-200"
+        >
+
+          <span
+            class="rounded-full border border-white/10 bg-white/5 px-4 py-2.5"
+          >
+            👥 Students
+          </span>
+
+          <span
+            class="rounded-full border border-white/10 bg-white/5 px-4 py-2.5"
+          >
+            ❔ Visitors
+          </span>
+
+          <span
+            class="rounded-full border border-white/10 bg-white/5 px-4 py-2.5"
+          >
+            ✓ Campus community
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- CALL TO ACTION -->
+    <section
+      id="get-started"
+      class="px-5 pb-20 sm:px-8 md:pb-24"
+      aria-labelledby="cta-title"
+    >
+
+      <div
+        class="mx-auto max-w-6xl overflow-hidden rounded-[26px] border border-orange-400/20 bg-gradient-to-br from-[#1a1108] via-[#0c0f17] to-[#1a1108] px-6 py-12 text-center shadow-2xl shadow-orange-500/10 sm:px-10"
+      >
+
+        <p
+          class="text-xs font-bold uppercase tracking-[.15em] text-amber-300"
+        >
+          Your campus journey starts here
+        </p>
+
+        <h2
+          id="cta-title"
+          class="mx-auto mt-4 max-w-2xl text-4xl font-bold tracking-tight text-white"
+        >
+          Feel at home, wherever you are on
+          <span class="text-gradient">
+            campus.
+          </span>
+        </h2>
+
+        <p
+          class="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-300"
+        >
+          Explore the information that helps you make the most of your campus experience.
+        </p>
+
+        <a
+          href="#top"
+          class="btn-glow mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-400 to-red-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-500/30"
+        >
+          Start exploring →
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer
+    class="relative z-10 border-t border-white/10 bg-[#07090f]/85 backdrop-blur"
+  >
+
+    <div
+      class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-7 sm:px-8 md:flex-row md:items-center md:justify-between"
+    >
+
+      <div class="flex items-center gap-2.5">
+
+        <span
+          class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-red-500 text-white"
+        >
+          🧭
+        </span>
+
+        <span class="text-sm font-bold text-white">
+          NexCampus
+        </span>
+
+      </div>
+
+      <p class="text-xs text-slate-500">
+        Making campus easier to navigate, one answer at a time.
+      </p>
+
+      <p class="text-xs text-slate-500">
+        © 2025 NexCampus
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- JavaScript -->
+  <script>
+
+    /* Mobile menu */
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuButton.addEventListener('click', () => {
+
+      const isHidden = mobileMenu.classList.toggle('hidden');
+
+      menuButton.setAttribute(
+        'aria-expanded',
+        String(!isHidden)
+      );
+
+    });
+
+
+    document
+      .querySelectorAll('#mobileMenu a')
+      .forEach(link => {
+
+        link.addEventListener('click', () => {
+
+          mobileMenu.classList.add('hidden');
+
+          menuButton.setAttribute(
+            'aria-expanded',
+            'false'
+          );
+
+        });
+
+      });
+
+
+    /* Search */
+    const searchForm =
+      document.getElementById('searchForm');
+
+    const searchInput =
+      document.getElementById('searchInput');
+
+    const searchMessage =
+      document.getElementById('searchMessage');
+
+
+    searchForm.addEventListener('submit', (event) => {
+
+      event.preventDefault();
+
+      const value =
+        searchInput.value.trim();
+
+
+      if (!value) {
+
+        searchMessage.textContent =
+          'Please enter something you want to know.';
+
+      } else {
+
+        searchMessage.textContent =
+          `We'll help you find information about "${value}".`;
+
+      }
+
+
+      searchMessage.classList.remove('hidden');
+
+    });
+
+
+    /* Popular topic buttons */
+    document
+      .querySelectorAll('.topic-link')
+      .forEach(button => {
+
+        button.addEventListener('click', () => {
+
+          searchInput.value =
+            button.textContent.trim();
+
+          searchInput.focus();
+
+        });
+
+      });
+
+
+    /* Topic cards */
+    document
+      .querySelectorAll('.topic-card')
+      .forEach(card => {
+
+        card.addEventListener('click', () => {
+
+          const topic =
+            card.innerText
+              .replace(/^0[1-4]\s*/, '')
+              .trim();
+
+          searchInput.value = topic;
+
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+
+          setTimeout(() => {
+            searchInput.focus();
+          }, 500);
+
+        });
+
+      });
+
+  </script>
+
+</body>
+</html>
