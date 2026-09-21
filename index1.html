@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexCampus | Your Campus, Made Simple</title>
+<style>
+:root{
+  --bg:#07090f;--panel:#0d111b;--panel2:#111725;--text:#eef1f8;--muted:#9aa4b5;
+  --orange:#ff7a45;--amber:#ffb627;--red:#ff5436;--line:rgba(255,255,255,.09);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+body.light-theme{
+  --bg:#f5f7fb;--panel:#ffffff;--panel2:#eef2f7;--text:#172033;--muted:#5f6b7d;
+  --line:rgba(23,32,51,.12);--shadow:0 18px 45px rgba(31,45,70,.12);
+}
+body.light-theme header{background:rgba(245,247,251,.9)}
+body.light-theme .grid-bg{background-image:linear-gradient(rgba(23,32,51,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(23,32,51,.045) 1px,transparent 1px)}
+body.light-theme .hero-card,body.light-theme .box,body.light-theme .tool,body.light-theme .topic{background:var(--panel)}
+body.light-theme .search,body.light-theme .feature-item,body.light-theme .saved input,body.light-theme .canvas-wrap{background:#eef2f7}
+body.light-theme .canvas-wrap canvas{background:#e9eef5}
+body.light-theme .tools{background:#edf1f6}
+body.light-theme .cta{background:linear-gradient(180deg,#edf1f6,#f5f7fb)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+.container{width:min(1120px,92%);margin:auto}
+.grid-bg{background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px}
+.glow{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+header{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:24px;font-weight:800;letter-spacing:-.8px}
+.logo span{color:var(--orange)}
+nav{display:flex;gap:28px;color:#b9c0cd;font-size:14px}
+nav a:hover{color:white}
+.hero{position:relative;overflow:hidden;padding:92px 0 80px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:55px;align-items:center}
+.eyebrow{display:inline-flex;padding:7px 12px;border:1px solid rgba(255,166,92,.25);border-radius:999px;color:#ffc27b;background:rgba(255,122,69,.08);font-size:13px;margin-bottom:20px}
+h1{font-size:clamp(46px,6vw,78px);line-height:1.02;letter-spacing:-3px;max-width:750px}
+.gradient{background:linear-gradient(90deg,#ffb627,#ff7a45,#ff5436);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:18px;max-width:620px;margin:24px 0 30px}
+.search{display:flex;max-width:620px;background:#101520;border:1px solid var(--line);border-radius:15px;padding:7px}
+.search input{flex:1;background:transparent;border:0;outline:0;color:white;padding:13px 14px}
+.theme-btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:7px 12px;cursor:pointer;font-size:12px}
+.theme-btn:hover{border-color:rgba(255,122,69,.5)}
+.btn{border:0;border-radius:11px;padding:12px 18px;background:linear-gradient(135deg,var(--orange),var(--red));color:white;font-weight:700;cursor:pointer;transition:.2s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.quick button{border:1px solid var(--line);background:#0d121c;color:#cbd2de;padding:8px 12px;border-radius:999px;cursor:pointer;font-size:12px}
+.hero-card{background:linear-gradient(145deg,#151b29,#0c1018);border:1px solid var(--line);border-radius:25px;padding:28px;box-shadow:var(--shadow);position:relative}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.status{font-size:12px;color:#ffbd74}
+.feature-list{display:grid;gap:12px}
+.feature-item{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:14px}
+.icon{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:rgba(255,122,69,.1);font-size:19px}
+.feature-item small{display:block;color:var(--muted);font-size:12px}
+section{padding:82px 0}
+.section-head{text-align:center;max-width:700px;margin:0 auto 42px}
+.section-head h2{font-size:clamp(30px,4vw,46px);letter-spacing:-1.5px}
+.section-head p{color:var(--muted);margin-top:12px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:25px}
+.box h3{margin:14px 0 7px}
+.box p{color:var(--muted);font-size:14px}
+.number{font-size:13px;color:#ffb36d}
+.tools{background:#090c13}
+.tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.tool{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:25px;position:relative;overflow:hidden}
+.tool h3{margin:13px 0 6px}
+.tool>p{color:var(--muted);font-size:14px}
+.tool-controls{margin-top:18px;padding-top:17px;border-top:1px solid var(--line)}
+.result{margin-top:12px;min-height:42px;color:#cfd6e3;font-size:13px}
+.saved{display:flex;gap:8px}
+.saved input{flex:1;background:#080b12;border:1px solid var(--line);border-radius:10px;color:white;padding:10px;outline:0}
+.saved button,.small-btn{border:1px solid rgba(255,122,69,.35);background:rgba(255,122,69,.1);color:#ffc080;border-radius:10px;padding:9px 13px;cursor:pointer}
+.canvas-wrap{background:#080b12;border:1px solid var(--line);border-radius:14px;padding:10px}
+canvas{width:100%;height:230px;display:block;background:#0a0e16;border-radius:10px;cursor:pointer}
+.map-help{font-size:12px;color:var(--muted);margin-top:8px}
+.video-wrap video{width:100%;border-radius:12px;background:#05070b;display:block}
+.topics{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.topic{padding:22px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.topic h3{font-size:16px}.topic p{color:var(--muted);font-size:13px;margin-top:5px}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
+.about p{color:var(--muted);margin-top:15px}
+.about-list{display:grid;gap:12px}
+.about-list div{padding:15px;border-left:2px solid var(--orange);background:rgba(255,255,255,.025)}
+.cta{text-align:center;background:linear-gradient(180deg,#090c13,#07090f)}
+.cta p{color:var(--muted);margin:10px 0 22px}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+.footer-flex{display:flex;justify-content:space-between;gap:20px}
+.toast{position:fixed;right:20px;bottom:20px;background:#151b27;border:1px solid var(--line);box-shadow:var(--shadow);padding:14px 17px;border-radius:12px;display:none;z-index:100;color:#e9edf5;max-width:320px}
+@media(max-width:800px){
+  nav{display:none}.hero-grid,.about{grid-template-columns:1fr}.steps,.topics{grid-template-columns:1fr 1fr}.tool-grid{grid-template-columns:1fr}
+  h1{letter-spacing:-2px}.hero{padding-top:65px}
+}
+@media(max-width:520px){
+  .steps,.topics{grid-template-columns:1fr}.footer-flex{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#home" class="logo">Nex<span>Campus</span></a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#tools">Explore tools</a>
+      <a href="#topics">Topics</a>
+      <a href="#about">About us</a>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeButton">☀️ Light</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="home" class="hero grid-bg">
+  <div class="glow" style="width:280px;height:280px;background:#ff5b2e;opacity:.12;left:-80px;top:100px"></div>
+  <div class="glow" style="width:240px;height:240px;background:#ffb627;opacity:.08;right:5%;top:40px"></div>
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Your campus, made simple</div>
+      <h1>The smarter way to <span class="gradient">understand your campus.</span></h1>
+      <p>NexCampus helps students quickly find clear answers about attendance, hostel rules, exams, facilities, safety and everyday campus life.</p>
+      <div class="search">
+        <input id="searchInput" placeholder="What do you want to know?">
+        <button class="btn" onclick="searchCampus()">Search</button>
+      </div>
+      <div class="quick">
+        <button onclick="setSearch('Attendance rules')">Attendance rules</button>
+        <button onclick="setSearch('Hostel guidelines')">Hostel guidelines</button>
+        <button onclick="setSearch('Exam policies')">Exam policies</button>
+      </div>
+      <div id="searchResult" class="result"></div>
+    </div>
+
+    <div class="hero-card">
+      <div class="card-top">
+        <div><strong>Campus Guide</strong><div style="color:var(--muted);font-size:13px">Student essentials</div></div>
+        <span class="status">● Ready to help</span>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item"><div class="icon">📚</div><div><strong>Attendance & academics</strong><small>Rules, exams and study information</small></div></div>
+        <div class="feature-item"><div class="icon">🏠</div><div><strong>Campus facilities</strong><small>Hostel, library and common services</small></div></div>
+        <div class="feature-item"><div class="icon">🛡️</div><div><strong>Safety & support</strong><small>Helpful guidance when you need it</small></div></div>
+        <div class="feature-item"><div class="icon">✓</div><div><strong>Clear information</strong><small>Simple answers without confusion</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-head">
+      <h2>Everything students need, in one place.</h2>
+      <p>Find information, save what matters and explore campus resources without getting lost in complicated pages.</p>
+    </div>
+    <div class="steps">
+      <div class="box"><div class="number">01 — FIND</div><h3>Find what you need</h3><p>Search common campus questions and jump directly to useful information.</p></div>
+      <div class="box"><div class="number">02 — UNDERSTAND</div><h3>Clear & simple answers</h3><p>Important rules and guidance are presented in a student-friendly way.</p></div>
+      <div class="box"><div class="number">03 — EXPLORE</div><h3>Use campus tools</h3><p>Use location, saved preferences, alerts, maps and video to explore campus.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tools" class="tools">
+  <div class="container">
+    <div class="section-head">
+      <h2>Helpful tools for everyday campus life</h2>
+      <p>Interactive features built into NexCampus to make common student tasks easier.</p>
+    </div>
+
+    <div class="tool" style="margin-bottom:18px">
+      <div class="icon">🎨</div>
+      <h3>Customize NexCampus</h3>
+      <p>Choose the appearance that feels comfortable for you. Your choice is saved in this browser.</p>
+      <div class="tool-controls">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="small-btn" onclick="setTheme('dark')">🌙 Dark Theme</button>
+          <button class="small-btn" onclick="setTheme('light')">☀️ Light Theme</button>
+        </div>
+        <div id="themeResult" class="result">Dark theme is selected by default.</div>
+      </div>
+    </div>
+
+    <div class="tool-grid">
+
+      <!-- Geolocation API -->
+      <div class="tool">
+        <div class="icon">📍</div>
+        <h3>Find My Campus</h3>
+        <p>Use your browser location to see your current latitude and longitude.</p>
+        <div class="tool-controls">
+          <button class="btn" onclick="findLocation()">Find my location</button>
+          <div id="locationResult" class="result">Location not checked yet.</div>
+        </div>
+      </div>
+
+      <!-- Local Storage API -->
+      <div class="tool">
+        <div class="icon">⭐</div>
+        <h3>My Campus Focus</h3>
+        <p>Save the campus topic you care about. Your choice stays saved in this browser.</p>
+        <div class="tool-controls">
+          <div class="saved">
+            <input id="focusInput" placeholder="e.g. Exam policies">
+            <button onclick="saveFocus()">Save</button>
+          </div>
+          <div id="focusResult" class="result">No saved focus yet.</div>
+        </div>
+      </div>
+
+      <!-- Web Notifications API -->
+      <div class="tool">
+        <div class="icon">🔔</div>
+        <h3>Campus Alerts</h3>
+        <p>Allow browser notifications to receive a sample NexCampus campus alert.</p>
+        <div class="tool-controls">
+          <button class="btn" onclick="sendAlert()">Enable campus alert</button>
+          <div id="notifyResult" class="result">Notifications are off until you allow them.</div>
+        </div>
+      </div>
+
+      <!-- Canvas API -->
+      <div class="tool">
+        <div class="icon">🎨</div>
+        <h3>Campus Quick Map</h3>
+        <p>Explore a simple campus map drawn dynamically using the HTML5 Canvas API.</p>
+        <div class="tool-controls">
+          <div class="canvas-wrap">
+            <canvas id="campusCanvas" width="620" height="300"></canvas>
+            <div class="map-help">Click a campus location to view information.</div>
+          </div>
+          <div id="mapResult" class="result">Select Library, Hostel, Cafeteria or Main Block.</div>
+        </div>
+      </div>
+
+      <!-- Video API -->
+      <div class="tool">
+        <div class="icon">🎬</div>
+        <h3>Explore Campus</h3>
+        <p>Watch a campus tour using the native HTML5 Video API.</p>
+        <div class="tool-controls video-wrap">
+          <video id="campusVideo" controls preload="metadata">
+            <source src="campus-tour.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+          <div id="videoResult" class="result">Campus tour ready. Add campus-tour.mp4 beside this HTML file.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="topics">
+  <div class="container">
+    <div class="section-head">
+      <h2>Explore campus topics</h2>
+      <p>Quick access to the information students ask about most.</p>
+    </div>
+    <div class="topics">
+      <div class="topic"><h3>📚 Attendance rules</h3><p>Understand attendance requirements and academic expectations.</p></div>
+      <div class="topic"><h3>🏠 Hostel guidelines</h3><p>Find information about hostel timings and everyday rules.</p></div>
+      <div class="topic"><h3>📝 Exam policies</h3><p>Get familiar with exam-related requirements and procedures.</p></div>
+      <div class="topic"><h3>🤝 Code of conduct</h3><p>Learn about responsible behaviour across campus.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container about">
+    <div>
+      <div class="eyebrow">Built for campus life</div>
+      <h2 style="font-size:42px;line-height:1.1;letter-spacing:-1px">Built for every member of campus.</h2>
+      <p>NexCampus brings essential campus information and useful browser-based tools into one simple student experience.</p>
+    </div>
+    <div class="about-list">
+      <div><strong>Students</strong><br><span style="color:var(--muted);font-size:13px">Get quick answers to everyday questions.</span></div>
+      <div><strong>Visitors</strong><br><span style="color:var(--muted);font-size:13px">Explore campus facilities and locations.</span></div>
+      <div><strong>Campus community</strong><br><span style="color:var(--muted);font-size:13px">Keep important information easy to find.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2 style="font-size:42px;letter-spacing:-1px">Feel at home, wherever you are on campus.</h2>
+    <p>NexCampus makes campus easier to understand, one answer at a time.</p>
+    <a href="#home" class="btn" style="display:inline-block">Get started</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-flex">
+    <div><strong style="color:white;font-size:18px">Nex<span style="color:var(--orange)">Campus</span></strong><br>Making campus easier to navigate, one answer at a time.</div>
+    <div>© 2026 NexCampus</div>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script>
+/* ---------- Theme customization ---------- */
+function applyTheme(theme){
+  document.body.classList.toggle("light-theme", theme==="light");
+  const button=document.getElementById("themeButton");
+  const result=document.getElementById("themeResult");
+  if(button) button.textContent=theme==="light" ? "🌙 Dark" : "☀️ Light";
+  if(result) result.textContent=(theme==="light" ? "Light" : "Dark")+" theme is selected.";
+}
+function setTheme(theme){
+  localStorage.setItem("nexCampusTheme",theme);
+  applyTheme(theme);
+  showToast((theme==="light" ? "Light" : "Dark")+" theme saved.");
+}
+function toggleTheme(){
+  const current=localStorage.getItem("nexCampusTheme") || "dark";
+  setTheme(current==="dark" ? "light" : "dark");
+}
+function loadTheme(){
+  applyTheme(localStorage.getItem("nexCampusTheme") || "dark");
+}
+
+/* ---------- General helpers ---------- */
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.style.display="block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>toast.style.display="none",3000);
+}
+
+function setSearch(text){
+  document.getElementById("searchInput").value=text;
+  searchCampus();
+}
+
+function searchCampus(){
+  const q=document.getElementById("searchInput").value.trim();
+  const result=document.getElementById("searchResult");
+  if(!q){
+    result.textContent="Type a campus question to get started.";
+    return;
+  }
+  const answers={
+    attendance:"NexCampus: Check your institution's official attendance policy for the exact requirement.",
+    hostel:"NexCampus: Hostel timings and rules can be checked in the hostel guidelines.",
+    exam:"NexCampus: Exam rules, eligibility and procedures are available under exam policies."
+  };
+  const lower=q.toLowerCase();
+  if(lower.includes("attendance")) result.textContent=answers.attendance;
+  else if(lower.includes("hostel")) result.textContent=answers.hostel;
+  else if(lower.includes("exam")) result.textContent=answers.exam;
+  else result.textContent="NexCampus: Search your campus guide or explore the topics below for more information.";
+}
+
+/* ---------- 1. Geolocation API ---------- */
+function findLocation(){
+  const result=document.getElementById("locationResult");
+  if(!navigator.geolocation){
+    result.textContent="Geolocation is not supported by this browser.";
+    return;
+  }
+  result.textContent="Requesting your location...";
+  navigator.geolocation.getCurrentPosition(
+    position=>{
+      const lat=position.coords.latitude.toFixed(6);
+      const lon=position.coords.longitude.toFixed(6);
+      result.innerHTML=`<strong>Location found.</strong><br>Latitude: ${lat}<br>Longitude: ${lon}`;
+      showToast("Your browser location was detected.");
+    },
+    error=>{
+      const messages={
+        1:"Location permission was denied.",
+        2:"Your location could not be determined.",
+        3:"The location request timed out."
+      };
+      result.textContent=messages[error.code] || "Unable to get your location.";
+    },
+    {enableHighAccuracy:true,timeout:10000,maximumAge:0}
+  );
+}
+
+/* ---------- 2. Local Storage API ---------- */
+function loadSavedFocus(){
+  const saved=localStorage.getItem("nexCampusFocus");
+  const result=document.getElementById("focusResult");
+  if(saved){
+    result.innerHTML=`Saved focus: <strong>${escapeHtml(saved)}</strong>`;
+    document.getElementById("focusInput").value=saved;
+  }
+}
+function saveFocus(){
+  const input=document.getElementById("focusInput");
+  const value=input.value.trim();
+  const result=document.getElementById("focusResult");
+  if(!value){
+    result.textContent="Enter a topic first.";
+    return;
+  }
+  localStorage.setItem("nexCampusFocus",value);
+  result.innerHTML=`Saved focus: <strong>${escapeHtml(value)}</strong>`;
+  showToast("Your campus focus was saved in this browser.");
+}
+function escapeHtml(text){
+  return text.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+/* ---------- 3. Web Notifications API ---------- */
+async function sendAlert(){
+  const result=document.getElementById("notifyResult");
+  if(!("Notification" in window)){
+    result.textContent="This browser does not support Web Notifications.";
+    return;
+  }
+  try{
+    let permission=Notification.permission;
+    if(permission==="default"){
+      permission=await Notification.requestPermission();
+    }
+    if(permission==="granted"){
+      new Notification("NexCampus Campus Alert",{
+        body:"Sample alert: Your campus information is ready to explore."
+      });
+      result.textContent="Campus alert sent successfully.";
+      showToast("Notification sent.");
+    }else if(permission==="denied"){
+      result.textContent="Notifications are blocked. Allow them in browser settings to test this feature.";
+    }else{
+      result.textContent="Notification permission was not granted.";
+    }
+  }catch(err){
+    result.textContent="Notification could not be displayed in this browser.";
+  }
+}
+
+/* ---------- 4. Canvas API ---------- */
+const canvas=document.getElementById("campusCanvas");
+const ctx=canvas.getContext("2d");
+const locations=[
+  {name:"Main Block",x:310,y:65,w:150,h:58,info:"Main Block — Administration and academic offices."},
+  {name:"Library",x:70,y:180,w:145,h:58,info:"Library — Books, study spaces and academic resources."},
+  {name:"Hostel",x:405,y:180,w:130,h:58,info:"Hostel — Student accommodation and residential services."},
+  {name:"Cafeteria",x:235,y:180,w:120,h:58,info:"Cafeteria — Food and refreshment area."}
+];
+
+function drawCampusMap(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Background
+  ctx.fillStyle="#0a0e16";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Roads / paths
+  ctx.strokeStyle="rgba(255,255,255,.13)";
+  ctx.lineWidth=18;
+  ctx.lineCap="round";
+  ctx.beginPath();
+  ctx.moveTo(385,90);ctx.lineTo(385,145);ctx.lineTo(140,145);
+  ctx.moveTo(300,145);ctx.lineTo(300,205);
+  ctx.moveTo(385,145);ctx.lineTo(470,205);
+  ctx.stroke();
+
+  // Green areas
+  ctx.fillStyle="rgba(90,170,100,.09)";
+  ctx.fillRect(15,20,190,120);
+  ctx.fillRect(430,25,175,105);
+
+  // Title
+  ctx.fillStyle="#eef1f8";
+  ctx.font="bold 16px Arial";
+  ctx.fillText("NexCampus Quick Map",18,25);
+
+  locations.forEach((loc,i)=>{
+    ctx.fillStyle=i===0?"rgba(255,122,69,.22)":"rgba(255,182,39,.13)";
+    ctx.strokeStyle=i===0?"#ff7a45":"rgba(255,182,39,.7)";
+    ctx.lineWidth=2;
+    roundRect(ctx,loc.x,loc.y,loc.w,loc.h,10);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle="#eef1f8";
+    ctx.font="bold 13px Arial";
+    const textWidth=ctx.measureText(loc.name).width;
+    ctx.fillText(loc.name,loc.x+(loc.w-textWidth)/2,loc.y+34);
+  });
+
+  ctx.fillStyle="#8f9aad";
+  ctx.font="12px Arial";
+  ctx.fillText("Click a location",18,285);
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+}
+canvas.addEventListener("click",function(e){
+  const rect=canvas.getBoundingClientRect();
+  const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+  const x=(e.clientX-rect.left)*scaleX,y=(e.clientY-rect.top)*scaleY;
+  const found=locations.find(l=>x>=l.x&&x<=l.x+l.w&&y>=l.y&&y<=l.y+l.h);
+  document.getElementById("mapResult").textContent=found?found.info:"Click one of the marked campus locations.";
+});
+drawCampusMap();
+
+/* ---------- 5. HTML5 Video API ---------- */
+const campusVideo=document.getElementById("campusVideo");
+const videoResult=document.getElementById("videoResult");
+campusVideo.addEventListener("play",()=>videoResult.textContent="Campus tour is playing.");
+campusVideo.addEventListener("pause",()=>videoResult.textContent="Campus tour paused.");
+campusVideo.addEventListener("ended",()=>videoResult.textContent="Campus tour finished.");
+campusVideo.addEventListener("error",()=>videoResult.textContent="Add a valid campus-tour.mp4 file beside this HTML page to play the tour.");
+
+loadTheme();
+loadSavedFocus();
+</script>
+</body>
+</html>
